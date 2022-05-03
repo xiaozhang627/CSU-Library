@@ -84,22 +84,6 @@ class CSULibrary(object):
         execution = soup.find('input', id="execution")['value']
 
         url2 = urllib.parse.unquote(response1.url)
-        headers2 = {
-            'cache-control': 'max-age=0',
-            'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="100", "Google Chrome";v="100"',
-            'sec-ch-ua-mobile': '?0',
-            'sec-ch-ua-platform': '"macOS"',
-            'upgrade-insecure-requests': '1',
-            'origin': 'https://ca.csu.edu.cn',
-            'content-type': 'application/x-www-form-urlencoded',
-            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36',
-            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-            'sec-fetch-site': 'same-origin',
-            'sec-fetch-mode': 'navigate',
-            'sec-fetch-user': '?1',
-            'sec-fetch-dest': 'document',
-            'referer': 'https://ca.csu.edu.cn/authserver/login?service=http%3A%2F%2Flibzw.csu.edu.cn%2Fcas%2Findex.php%3Fcallback%3Dhttp%3A%2F%2Flibzw.csu.edu.cn%2Fhome%2Fweb%2Ff_second',
-        }
         data2 = {
             'username': self.userid,
             'password': getAesString(randomString(64)+self.password, salt, randomString(16)),
@@ -110,7 +94,7 @@ class CSULibrary(object):
             'lt': '',
             'execution': execution
         }
-        response2 = self.client.post(url2, headers=headers2, data=data2)
+        response2 = self.client.post(url2, data=data2)
 
     def reserve(self):
         '''
