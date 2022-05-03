@@ -6,6 +6,7 @@ import logging
 import requests
 import argparse
 import configparser
+import urllib.parse
 
 from bs4 import BeautifulSoup
 from datetime import datetime
@@ -82,7 +83,7 @@ class CSULibrary(object):
         salt = soup.find('input', id="pwdEncryptSalt")['value']
         execution = soup.find('input', id="execution")['value']
 
-        url2 = "https://ca.csu.edu.cn/authserver/login?service=http%3A%2F%2Flibzw.csu.edu.cn%2Fcas%2Findex.php%3Fcallback%3Dhttp%3A%2F%2Flibzw.csu.edu.cn%2Fhome%2Fweb%2Ff_second"
+        url2 = urllib.parse.unquote(response1.url)
         headers2 = {
             'cache-control': 'max-age=0',
             'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="100", "Google Chrome";v="100"',
