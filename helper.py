@@ -1,3 +1,4 @@
+import os
 import json
 import random
 import base64
@@ -121,10 +122,10 @@ class CSULibrary(object):
             response = self.client.post(url, headers=headers, data=data)
             if response.json()['status'] == 1:
                 break
-
+        
+        logging.info(response.json()['msg'])
         if response.json()['status'] == 0:
             raise Exception(response.json()['msg'])
-        logging.info(response.json()['msg'])
 
     def checkIn(self):
         '''
@@ -132,7 +133,8 @@ class CSULibrary(object):
         '''
         status = self.getCurrentUse()['statusname']
         if status != '已预约' and status != '临时离开':
-            raise Exception("当前座位状态不应当签到")
+            logging.info("当前座位状态不应当签到")
+            os._exit(0)
 
         self.login()
 
@@ -152,6 +154,8 @@ class CSULibrary(object):
         }
         response = self.client.post(url, headers=headers, data=data)
         logging.info(response.json()['msg'])
+        if response.json()['status'] == 0:
+            raise Exception(response.json()['msg'])
 
     def leave(self):
         '''
@@ -159,7 +163,8 @@ class CSULibrary(object):
         '''
         status = self.getCurrentUse()['statusname']
         if status != '使用中':
-            raise Exception("当前座位状态不应当签离")
+            logging.info("当前座位状态不应当签离")
+            os._exit(0)
 
         self.login()
 
@@ -179,6 +184,8 @@ class CSULibrary(object):
         }
         response = self.client.post(url, headers=headers, data=data)
         logging.info(response.json()['msg'])
+        if response.json()['status'] == 0:
+            raise Exception(response.json()['msg'])
 
     def getCurrentUse(self):
         '''
@@ -193,7 +200,8 @@ class CSULibrary(object):
         }
         response = self.client.get(url, headers=headers, params=params)
         if len(response.json()['data']) == 0:
-            raise Exception("当前没有正在使用中的座位或研讨间")
+            logging.info("当前没有正在使用中的座位或研讨间")
+            os._exit(0)
         return response.json()['data'][0]
 
     def getBookTimeId(self, i):
@@ -223,12 +231,10 @@ if __name__ == "__main__":
                         level=logging.INFO, format=LOG_FORMAT)
 
     helper = CSULibrary(args.userid, args.password)
-    try:
-        if args.action == 'reserve':
-            helper.reserve()
-        elif args.action == 'checkIn':
-            helper.checkIn()
-        elif args.action == 'leave':
-            helper.leave()
-    except Exception as e:
-        logging.error(e)
+    # 故意不做异常处理，这样 Github 便会发邮件提醒
+    if args.action == 'reserve':
+        helper.reserve()
+    elif args.action == 'checkIn':
+        helper.checkIn()
+    elif args.action == 'leave':
+        helper.leave()
