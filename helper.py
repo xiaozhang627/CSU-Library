@@ -113,7 +113,7 @@ class CSULibrary(object):
             data = {
                 'access_token': access_token,
                 'userid': self.userid,
-                'segment': self.getBookTimeId(i)[0],
+                'segment': self.getBookTimeId(i)[1],
                 'type': '1',
                 'operateChannel': '2'
             }
