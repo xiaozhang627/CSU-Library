@@ -1,6 +1,0 @@
-pandas
-requests
-configparser
-pycryptodomex
-beautifulsoup4
-
