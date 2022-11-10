@@ -65,8 +65,9 @@ class CSULibrary(object):
         self.area = []
         self.seatid = []
         for s in self.seatno:
-            self.area.append(seat_data[str(seat_data["NO"]) == s].values[0][2])
-            self.seatid.append(seat_data[str(seat_data["NO"]) == s].values[0][0])
+            s = int(s) if s.isdigit() else s 
+            self.area.append(seat_data[seat_data["NO"] == s].values[0][2])
+            self.seatid.append(seat_data[seat_data["NO"] == s].values[0][0])
 
     def login(self):
         '''
