@@ -65,8 +65,8 @@ class CSULibrary(object):
         self.area = []
         self.seatid = []
         for s in self.seatno:
-            self.area.append(str(seat_data[seat_data["NO"]) == s].values[0][2])
-            self.seatid.append(str(seat_data[seat_data["NO"]) == s].values[0][0])
+            self.area.append(seat_data[str(seat_data["NO"]) == s].values[0][2])
+            self.seatid.append(seat_data[str(seat_data["NO"]) == s].values[0][0])
 
     def login(self):
         '''
